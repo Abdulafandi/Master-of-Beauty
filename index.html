@@ -156,7 +156,7 @@ a{color:inherit}
 @keyframes rise{from{opacity:0;transform:translateY(56px)}to{opacity:1;transform:translateY(0)}}
 .hero .eyebrow{animation:rise 1s var(--ease-out) .35s backwards}
 .hero-title .ln{padding-block:.05em;margin-block:-.05em}
-.hero-title .ln-i{transform:translateY(130%);animation:lnrise 1.2s var(--ease-quint) forwards}
+.hero-title .ln-i{transform:translateY(130%);animation:lnrise 1.35s var(--ease-quint) forwards}
 .hero-title .ln:nth-child(1) .ln-i{animation-delay:.5s}
 .hero-title .ln:nth-child(2) .ln-i{animation-delay:.66s}
 @keyframes lnrise{to{transform:translateY(0)}}
@@ -339,24 +339,24 @@ section{scroll-margin-top:84px;position:relative}
 .foot-links a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
 /* ---------- reveal ---------- */
-.rv{opacity:0;transform:translateY(34px);transition:opacity .85s var(--ease-out),transform 1.15s var(--ease-quint);transition-delay:var(--d,0s)}
+.rv{opacity:0;transform:translateY(32px);transition:opacity 1s var(--ease-out),transform 1.45s var(--ease-quint);transition-delay:var(--d,0s)}
 .rv.in{opacity:1;transform:none}
 
 /* ---- signature reveals ---- */
 /* headlines: type rises line-by-line from behind the baseline */
 .ln{display:block;overflow:hidden;padding-block:.14em;margin-block:-.14em}
 .ln-i{display:block}
-.mask-rise .ln-i{transform:translateY(130%);transition:transform 1.05s var(--ease-quint);transition-delay:calc(var(--li,0) * .11s + var(--d,0s))}
+.mask-rise .ln-i{transform:translateY(130%);transition:transform 1.35s var(--ease-quint);transition-delay:calc(var(--li,0) * .14s + var(--d,0s))}
 .mask-rise.in .ln-i{transform:translateY(0)}
 /* bronze accent word catches the light as it settles */
-.mask-rise .au{background-size:230% 100%;background-position:100% 0;transition:background-position 1.5s var(--ease-quint) .22s}
+.mask-rise .au{background-size:230% 100%;background-position:100% 0;transition:background-position 1.9s var(--ease-quint) .3s}
 .mask-rise.in .au{background-position:0% 0}
 /* eyebrow: the leading rule draws like a drafting line, then the label eases in */
 .eyebrow.rv{transform:translateX(-12px)}
 .eyebrow.rv.in{transform:none}
-.eyebrow.rv::before{transform-origin:left center;transform:scaleX(0);transition:transform .9s var(--ease-quint) .08s}
+.eyebrow.rv::before{transform-origin:left center;transform:scaleX(0);transition:transform 1.1s var(--ease-quint) .08s}
 .eyebrow.rv.in::before{transform:scaleX(1)}
-.contact .eyebrow.rv::after{transform-origin:right center;transform:scaleX(0);transition:transform .9s var(--ease-quint) .08s}
+.contact .eyebrow.rv::after{transform-origin:right center;transform:scaleX(0);transition:transform 1.1s var(--ease-quint) .08s}
 .contact .eyebrow.rv.in::after{transform:scaleX(1)}
 
 /* ---------- responsive ---------- */
@@ -668,8 +668,16 @@ const io = new IntersectionObserver((entries) => {
   for (const e of entries) {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }
-}, { threshold: 0, rootMargin: '0px 0px -16% 0px' });
+}, { threshold: 0, rootMargin: window.matchMedia('(max-width: 880px)').matches
+      ? '0px 0px -26% 0px'   // mobile: wait until it's well into view
+      : '0px 0px -18% 0px' });
 document.querySelectorAll('.rv, .mask-rise').forEach(el => io.observe(el));
+// Safety: once the page is scrolled to the very bottom, reveal anything still hidden
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    document.querySelectorAll('.rv:not(.in), .mask-rise:not(.in)').forEach(el => el.classList.add('in'));
+  }
+}, { passive: true });
 // Statement laser line draws when the section enters
 const st = document.getElementById('statement');
 const ioSec = new IntersectionObserver((entries) => {
