@@ -1,0 +1,29 @@
+# Dev tools
+serve.mjs
+screenshot.mjs
+screenshot-full.mjs
+screenshot-section.mjs
+ss_*.png
+temporary screenshots/
+CLAUDE.md
+.DS_Store
+
+# Archived demos (kept locally, not in git)
+_archive/
+
+# Local-only design reference (not part of the site)
+Reference/
+
+# Generated knowledge graph (tooling output, not part of the site)
+graphify-out/
+
+# OS / editor
+*.swp
+.idea/
+.vscode/
+
+# Source brand assets (originals kept locally; site uses assets/img/)
+brand_assets/
+
+# Local tooling config (not part of the site)
+.impeccable.md
