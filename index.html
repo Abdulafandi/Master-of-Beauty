@@ -39,12 +39,12 @@
   --font-script:"Great Vibes",cursive;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip}
 body{
   font-family:var(--font-body);font-weight:300;color:var(--ink);
   background:linear-gradient(180deg,var(--porcelain) 0%,var(--cream) 26%,var(--cream) 78%,var(--cream-deep) 100%);
   line-height:1.65;font-size:1.0625rem;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
 }
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -537,9 +537,11 @@ h2 em{font-style:italic}
   .site-head{padding:.9rem 0}
   .site-head .wide{padding-left:.9rem;padding-right:1.6rem}
   .brand-name{display:none}
+  .brand img{width:54px}
+  .scrolled .brand img{width:44px}
   .eyebrow{font-size:.6rem;letter-spacing:.22em;gap:.6rem}
   .eyebrow::before,.eyebrow.center::after{width:1.1rem}
-  .head-cta{padding:.75rem 1.3rem;font-size:.64rem;letter-spacing:.16em}
+  .head-cta{padding:.62rem 1.05rem;font-size:.58rem;letter-spacing:.14em}
   .hero{padding-top:5.6rem}
   .hero-title{font-size:clamp(2.6rem,13.5vw,4.6rem);letter-spacing:.06em}
   .hero .script-line{font-size:1.55rem;margin-top:1.2rem}
