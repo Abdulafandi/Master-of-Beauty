@@ -178,14 +178,43 @@ h2 em{font-style:italic}
 }
 .hero-col{max-width:330px}
 .hero-col.left{justify-self:end;text-align:left}
-.hero-col.right{justify-self:start}
+.hero-col.right{justify-self:start;width:min(330px,100%);min-width:0} /* keep the conveyor's intrinsic width from sizing the column */
 .hero-col .lead{font-size:1.02rem;line-height:1.7}
 .hero-ctas{display:flex;flex-direction:column;align-items:flex-start;gap:.9rem;margin-top:1.8rem}
-.trust{display:flex;flex-direction:column;gap:1.1rem}
-.trust .stars{color:var(--gold-deep);letter-spacing:.32em;font-size:.95rem}
+/* benefit conveyor — flows continuously through the frame, pauses on hover */
 .trust strong{font-family:var(--font-display);font-weight:500;font-size:1.5rem;letter-spacing:.02em;display:block}
-.trust .t-item{border-left:1px solid var(--hairline);padding-left:1.1rem}
-.trust .t-item p{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);line-height:1.55}
+.trust{
+  --t-card:300px;--t-gap:2.4rem;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+}
+.trust .t-track{display:flex;width:max-content;animation:t-flow 32s linear infinite}
+.trust:hover .t-track,.trust:focus-within .t-track{animation-play-state:paused}
+@keyframes t-flow{to{transform:translateX(calc(-3*(var(--t-card) + var(--t-gap))))}}
+.t-set{display:flex}
+.trust .t-item{width:var(--t-card);flex:none;margin-right:var(--t-gap);border-left:1px solid var(--hairline);padding-left:1.1rem}
+.trust .t-item p{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);line-height:1.55;margin-top:.2rem}
+.t-niche{
+  display:grid;place-items:center;width:48px;height:60px;margin-bottom:1rem;
+  border:1px solid var(--hairline);border-radius:999px 999px 0 0;
+  background:radial-gradient(85% 60% at 50% 18%,oklch(87% .055 90 / .55),transparent 78%);
+  color:var(--gold-deep);
+}
+.t-niche svg{width:22px;height:22px}
+/* no animation (reduced motion / no JS): stack the three benefits, hide the loop copy */
+@media (prefers-reduced-motion:reduce){
+  .trust{-webkit-mask-image:none;mask-image:none}
+  .trust .t-track,.trust .t-set{display:block;width:auto}
+  .trust .t-item{width:auto;margin-right:0}
+  .trust .t-item+.t-item{margin-top:1.4rem}
+  .t-dup{display:none}
+}
+.no-js .trust{-webkit-mask-image:none;mask-image:none}
+.no-js .trust .t-track,.no-js .trust .t-set{display:block;width:auto}
+.no-js .trust .t-item{width:auto;margin-right:0}
+.no-js .trust .t-item+.t-item{margin-top:1.4rem}
+.no-js .t-dup{display:none}
 .hero-scrollcue{
   position:relative;z-index:2;display:flex;justify-content:center;padding:1rem 0 1.6rem;
 }
@@ -446,12 +475,6 @@ h2 em{font-style:italic}
   line-height:1.55;margin-top:1.2rem;color:var(--ink);
 }
 .review figcaption{margin-top:1.4rem;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
-.reviews-stat{
-  margin-top:clamp(4rem,9vw,7rem);text-align:center;
-}
-.reviews-stat .big{font-family:var(--font-display);font-weight:500;font-size:clamp(3rem,6vw,4.6rem)}
-.reviews-stat .big .gold{color:var(--gold-deep)}
-.reviews-stat p{font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);margin-top:.6rem}
 
 /* ============================================================
    KONTAKT
@@ -521,8 +544,8 @@ h2 em{font-style:italic}
   .hero-col.left .lead{margin-inline:auto}
   .hero-ctas{align-items:center;flex-direction:row;flex-wrap:wrap;justify-content:center}
   .hero-col.right{order:3;justify-self:center;width:100%}
-  .trust{flex-direction:row;justify-content:center;gap:2rem;flex-wrap:wrap}
-  .trust .t-item{max-width:200px}
+  .trust{width:min(430px,100%);margin-inline:auto}
+  .trust .t-item{border-left:0;padding-left:0;display:flex;flex-direction:column;align-items:center;text-align:center}
   .studio-grid,.menu-wrap,.schulung-grid,.oezlem-grid{grid-template-columns:1fr}
   .menu-side{position:static;margin-inline:auto}
   .schulung-grid .niche{max-width:400px;margin-inline:auto;width:100%}
@@ -620,19 +643,54 @@ h2 em{font-style:italic}
     </figure>
 
     <div class="hero-col right a a4">
-      <div class="trust">
-        <div class="t-item">
-          <span class="stars" aria-hidden="true">★★★★★</span>
-          <strong>4,7 von 5</strong>
-          <p>Über 90 verifizierte Bewertungen</p>
-        </div>
-        <div class="t-item">
-          <strong>Top Rated</strong>
-          <p>Ausgezeichnet 2025 — Beautinda</p>
-        </div>
-        <div class="t-item">
-          <strong>Mo – Fr</strong>
-          <p>10 – 20 Uhr · Köhnestraße 3, Hamburg</p>
+      <div class="trust" role="group" aria-label="Warum Master of Beauty">
+        <div class="t-track">
+          <div class="t-set">
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5v19M3.8 7.25l16.4 9.5M20.2 7.25l-16.4 9.5M12 2.5l-2 2.2M12 2.5l2 2.2M12 21.5l-2-2.2M12 21.5l2-2.2"/></svg>
+              </span>
+              <strong>ICE Dioden Laser</strong>
+              <p>Dauerhaft glatte Haut — sanft dank <span style="white-space:nowrap">Ice-Kühlung</span></p>
+            </div>
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 2.6v5.1c0 4.6-2.9 7.6-7 9.3-4.1-1.7-7-4.7-7-9.3V5.6z"/><path d="M8.8 11.6l2.2 2.3 4.2-4.6"/></svg>
+              </span>
+              <strong>Hygiene</strong>
+              <p>Klinikniveau — makellos bei jeder Sitzung</p>
+            </div>
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2.1"/></svg>
+              </span>
+              <strong>Bis 20 Uhr</strong>
+              <p>Mo – Fr · Köhnestraße 3, Hamburg</p>
+            </div>
+          </div>
+          <div class="t-set t-dup" aria-hidden="true">
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5v19M3.8 7.25l16.4 9.5M20.2 7.25l-16.4 9.5M12 2.5l-2 2.2M12 2.5l2 2.2M12 21.5l-2-2.2M12 21.5l2-2.2"/></svg>
+              </span>
+              <strong>ICE Dioden Laser</strong>
+              <p>Dauerhaft glatte Haut — sanft dank <span style="white-space:nowrap">Ice-Kühlung</span></p>
+            </div>
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 2.6v5.1c0 4.6-2.9 7.6-7 9.3-4.1-1.7-7-4.7-7-9.3V5.6z"/><path d="M8.8 11.6l2.2 2.3 4.2-4.6"/></svg>
+              </span>
+              <strong>Hygiene</strong>
+              <p>Klinikniveau — makellos bei jeder Sitzung</p>
+            </div>
+            <div class="t-item">
+              <span class="t-niche" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2.1"/></svg>
+              </span>
+              <strong>Bis 20 Uhr</strong>
+              <p>Mo – Fr · Köhnestraße 3, Hamburg</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -933,11 +991,6 @@ h2 em{font-style:italic}
         <blockquote>„Das schönste Studio, in dem ich je war — man spürt die Liebe zum Detail überall.“</blockquote>
         <figcaption>Verifizierte Buchung · Beautinda</figcaption>
       </figure>
-    </div>
-
-    <div class="reviews-stat" data-reveal>
-      <p class="big"><span class="gold">4,7</span> / 5</p>
-      <p>Ø aus über 90 Bewertungen · Top Rated 2025</p>
     </div>
   </div>
 </section>
